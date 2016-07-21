@@ -40,10 +40,9 @@ public class ChatClient {
             throw new AppIOException("In creating socket", ioe);
         }
         clientContext.setName(name);
-        registerClient();
         this.objectFactory = new ObjectFactory();
         this.ioService = objectFactory.getObjectIOService();
-
+        registerClient();
     }
 
     public void start() {
