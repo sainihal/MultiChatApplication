@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 public class ChatClient {
     private static final Logger logger = Logger.getLogger(ChatClient.class.getName());
 
-    private ClientContext clientContext = new ClientContext();
+    private ClientContext clientContext;
     private MessageReader messageReader;
     private ObjectFactory objectFactory;
     private IOService ioService;
@@ -38,6 +38,7 @@ public class ChatClient {
         } catch (IOException ioe) {
             throw new AppIOException("In creating socket", ioe);
         }
+        clientContext = new ClientContext();
         clientContext.setName(name);
         registerClient();
         this.objectFactory = new ObjectFactory();
