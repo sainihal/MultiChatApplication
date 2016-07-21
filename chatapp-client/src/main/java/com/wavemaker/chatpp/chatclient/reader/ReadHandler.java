@@ -10,7 +10,6 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-;
 
 /**
  * Created by sainihala on 14/7/16.

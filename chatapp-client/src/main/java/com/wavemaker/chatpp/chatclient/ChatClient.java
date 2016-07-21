@@ -33,12 +33,12 @@ public class ChatClient {
     private IOService ioService;
 
     public ChatClient(String host, int port, String name) {
+        clientContext = new ClientContext();
         try {
             clientContext.setSocket((new Socket(host, port)));
         } catch (IOException ioe) {
             throw new AppIOException("In creating socket", ioe);
         }
-        clientContext = new ClientContext();
         clientContext.setName(name);
         registerClient();
         this.objectFactory = new ObjectFactory();

@@ -47,7 +47,6 @@ public class ClientApp {
         }
 
 /*
-
         Runnable runnable = new Runnable() {
             public void run() {
                 ChatClient chatClient =  new ChatClient(DEFAULT_HOST , PropertyLoader.getPort() , "c1");

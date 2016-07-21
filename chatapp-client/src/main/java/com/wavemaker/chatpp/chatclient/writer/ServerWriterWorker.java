@@ -57,7 +57,7 @@ public class ServerWriterWorker implements Runnable {
                 logger.log(Level.INFO, "processing in shut down hook");
                 if (!quitted) {
                     try {
-                        logger.log(Level.INFO, "quitting chatclient");
+                        logger.log(Level.INFO, "quitting chat client");
                         WriteHandler.writeToServer(new QuitMessage(clientContext.getName()),
                                 clientContext.getSocket(), ioService);
                         logger.log(Level.INFO, "quit message written");
