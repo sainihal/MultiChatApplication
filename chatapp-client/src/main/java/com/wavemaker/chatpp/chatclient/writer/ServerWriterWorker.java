@@ -60,7 +60,7 @@ public class ServerWriterWorker implements Runnable {
                         logger.log(Level.INFO, "quitting chatclient");
                         WriteHandler.writeToServer(new QuitMessage(clientContext.getName()),
                                 clientContext.getSocket(), ioService);
-                        logger.log(Level.INFO, "quit messssage written");
+                        logger.log(Level.INFO, "quit message written");
                         messageReader.close();
                     } catch (IOException ioe) {
                         logger.log(Level.SEVERE, "quit message not sent", ioe);
