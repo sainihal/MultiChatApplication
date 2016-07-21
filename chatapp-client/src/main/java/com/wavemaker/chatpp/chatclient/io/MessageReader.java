@@ -1,11 +1,10 @@
 package com.wavemaker.chatpp.chatclient.io;
 
-import com.wavemaker.chatpp.chatclient.exceptions.ClientClosedException;
-import com.wavemaker.chatpp.chatclient.model.ClientContext;
 import com.wavemaker.chatapp.commons.messages.ChatMessage;
 import com.wavemaker.chatapp.commons.messages.Message;
-import com.wavemaker.chatapp.commons.messages.QuitMessage;
 import com.wavemaker.chatapp.commons.properties.Constants;
+import com.wavemaker.chatpp.chatclient.exceptions.ClientClosedException;
+import com.wavemaker.chatpp.chatclient.model.ClientContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,7 +42,7 @@ public class MessageReader {
         }
         destination = br.readLine();
         if (destination.equals(Constants.EXIT_KEY)) {
-            return new QuitMessage(sender);
+           throw new ClientClosedException("exit key detected");
         }
         logger.log(Level.INFO, "enter data");
         while (!br.ready()) {
