@@ -5,8 +5,8 @@ package com.wavemaker.chatpp.chatclient.exceptions;
  */
 public class RegistrataionFailed extends RuntimeException {
 
-    public RegistrataionFailed(String invalidRequest) {
-        super(invalidRequest);
+    public RegistrataionFailed(String message) {
+        super(message);
     }
 
 }
