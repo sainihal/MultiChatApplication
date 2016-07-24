@@ -56,7 +56,7 @@ public class ChatServer implements Runnable {
                     threadsList.add(serverThread);
                     serverThread.start();
                 } catch (ClientAlreadyExistsException clientAlreadyExists) {
-                    lOGGER.error("In registering client",clientAlreadyExists);
+                    lOGGER.error("In registering client", clientAlreadyExists);
                 }
             }
         } catch (IOException e) {

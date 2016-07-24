@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-;
+
 
 /**
  * Created by sainihala on 17/7/16.
@@ -24,7 +24,7 @@ public class ClientReaderHandler {
     public static Message readFromSender(ClientContext clientContext, IOService ioService) {
         Message message;
         try {
-            logger.info("Server: reading from client.......{}" , clientContext.getClientData().getName());
+            logger.info("Server: reading from client.......{}", clientContext.getClientData().getName());
             while (true) {
                 if (clientContext.getClientData().getSocket().getInputStream().available() != 0) {
                     break;

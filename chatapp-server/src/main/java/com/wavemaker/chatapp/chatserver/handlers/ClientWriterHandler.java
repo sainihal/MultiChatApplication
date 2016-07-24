@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 
-
 /**
  * Created by sainihala on 17/7/16.
  */
@@ -26,14 +25,14 @@ public class ClientWriterHandler {
         try {
             if (message.getType() == Message.MessageType.CHAT) {
                 ChatMessage chatMessage = (ChatMessage) message;
-                logger.info("destination is {}" , chatMessage.getDestination());
+                logger.info("destination is {}", chatMessage.getDestination());
                 if (serverRegistry.exists(chatMessage.getDestination())) {
                     ioService.write(serverRegistry.getSocket(chatMessage.getDestination()), message);
                 } else {
                     message = new ClientNotExists();
                     ioService.write(serverRegistry.getSocket(name), message);
                 }
-                logger.info(" message  written to client {}" , message.toString());
+                logger.info(" message  written to client {}", message.toString());
             } else {
                 ioService.write(serverRegistry.getSocket(name), message);
             }

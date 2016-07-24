@@ -32,7 +32,7 @@ public class ServerWriterWorker implements Runnable {
 
     public void run() {
         registerShutdownHook();
-        Message message = null;
+        Message message;
         try {
             while (!clientContext.isClosed()) {
                 message = WriteHandler.readInput(clientContext, inputMessageHandler);
@@ -40,10 +40,9 @@ public class ServerWriterWorker implements Runnable {
             }
         } catch (IOException e) {
             throw new FailedToWriteException("Failed to write to server", e);
-        }catch(ClientClosedException clientClosed){
+        } catch (ClientClosedException clientClosed) {
             logger.info(clientClosed.getMessage());
-        }
-        finally {
+        } finally {
             clientContext.setClosed(true);
         }
         logger.info("closing chatclient writer.....");
@@ -52,10 +51,10 @@ public class ServerWriterWorker implements Runnable {
     private void registerShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
-                logger.info( "processing in shut down hook");
-                if(!clientContext.isClosed()) {
+                logger.info("processing in shut down hook");
+                if (!clientContext.isClosed()) {
                     try {
-                        logger.info( "quitting chat client");
+                        logger.info("quitting chat client");
                         WriteHandler.writeToServer(new QuitMessage(clientContext.getName()),
                                 clientContext, ioService);
                         logger.info("quit message written");

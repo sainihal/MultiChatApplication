@@ -32,7 +32,7 @@ public class ServerApp {
 
         Thread thread = new Thread(chatServer);
         thread.start();
-        logger.info( "enter {} to close the server", Constants.EXIT_KEY );
+        logger.info("enter {} to close the server", Constants.EXIT_KEY);
 
         try {
             outerloop:
@@ -47,14 +47,13 @@ public class ServerApp {
         } catch (IOException e) {
             throw new AppIOException("In Chat server invoker ", e);
         }
-        if (status.equals(Constants.EXIT_KEY)) {
+        if (status != null && status.equals(Constants.EXIT_KEY)) {
             chatServer.closeClients();
         }
-        try{
+        try {
             br.close();
-        }catch (IOException ioe)
-        {
-            logger.error("In closing buffered reader",ioe);
+        } catch (IOException ioe) {
+            logger.error("In closing buffered reader", ioe);
         }
     }
 }

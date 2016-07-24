@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 
-
 /**
  * Created by sainihala on 14/7/16.
  */
@@ -22,7 +21,7 @@ public class WriteHandler {
 
     public static void writeToServer(Message message, ClientContext clientContext, IOService ioService)
             throws IOException {
-        logger.info( message.toString());
+        logger.info(message.toString());
         ioService.write(clientContext.getSocket(), message);
         if (message.getType() == Message.MessageType.QUIT) {
             clientContext.setClosed(true);
@@ -32,7 +31,6 @@ public class WriteHandler {
 
     public static Message readInput(ClientContext clientContext, InputMessageHandler inputMessageHandler)
             throws IOException, ClientClosedException {
-        Message message = inputMessageHandler.getMessage(clientContext);
-        return message;
+        return inputMessageHandler.getMessage(clientContext);
     }
 }

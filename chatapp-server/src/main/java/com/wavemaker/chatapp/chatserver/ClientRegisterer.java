@@ -25,11 +25,11 @@ public class ClientRegisterer {
     private static Logger logger = LoggerFactory.getLogger(ClientRegisterer.class.getName());
 
     public static ClientContext registerClient(Socket socket, ServerContext serverContext, IOService ioService) {
-        RegisterMessage registerMessage = null;
+        RegisterMessage registerMessage;
         try {
             try {
                 registerMessage = (RegisterMessage) ioService.read(socket);
-                logger.info("name is {}" , registerMessage.getName());
+                logger.info("name is {}", registerMessage.getName());
             } catch (ClassNotFoundException c) {
                 throw new AppClassNotFoundException("in client registration ", c);
             }
@@ -40,12 +40,12 @@ public class ClientRegisterer {
                 throw new ClientAlreadyExistsException("client already exists with name " + registerMessage.getName());
             }
             ioService.write(socket, new RegistrationSuccess(registerMessage.getName()));
-            logger.info("{} registered successfully" ,registerMessage.getName());
+            logger.info("{} registered successfully", registerMessage.getName());
         } catch (IOException ioe) {
             throw new AppIOException("In ClintRegistration ", ioe);
         }
-        ClientContext clientContext = new ClientContext((new ClientData(registerMessage.getName(), socket)),
-                serverContext);
-        return clientContext;
+        return (new ClientContext((new ClientData(registerMessage.getName(), socket)),
+                serverContext));
+
     }
 }

@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.net.Socket;
 
 
-
 public class ChatClient {
     private static final Logger logger = LoggerFactory.getLogger(ChatClient.class.getName());
 
@@ -68,7 +67,7 @@ public class ChatClient {
             if (acknowledgementMessage.getType() == Message.MessageType.REGISTRATION_SUCCESS) {
                 logger.info(acknowledgementMessage.toString());
             } else if (acknowledgementMessage.getType() == Message.MessageType.REGISTRATION_FAILED) {
-                logger.info("Registration Failed, {}" , acknowledgementMessage);
+                logger.info("Registration Failed, {}", acknowledgementMessage);
                 closeSocket();
                 throw new RegistrationFailedException(acknowledgementMessage.toString());
             }
