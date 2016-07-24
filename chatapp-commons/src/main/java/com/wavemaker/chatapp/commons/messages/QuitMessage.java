@@ -30,7 +30,7 @@ public class QuitMessage implements Serializable, Message {
     }
 
     public String toString() {
-        return "treminating.... " + getSender();
+        return "terminating.... " + getSender();
     }
 
 }

@@ -6,18 +6,19 @@ import com.wavemaker.chatapp.chatserver.model.ServerContext;
 import com.wavemaker.chatapp.commons.exceptions.AppIOException;
 import com.wavemaker.chatapp.commons.properties.Constants;
 import com.wavemaker.chatapp.commons.properties.PropertyLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  * Created by sainihala on 23/6/16.
  */
 public class ServerApp {
-    private static final Logger logger = Logger.getLogger(ServerApp.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(ServerApp.class.getName());
 
     public ServerApp() {
     }
@@ -31,7 +32,7 @@ public class ServerApp {
 
         Thread thread = new Thread(chatServer);
         thread.start();
-        logger.log(Level.INFO, "enter " + Constants.EXIT_KEY + " to close the server");
+        logger.info( "enter {} to close the server", Constants.EXIT_KEY );
 
         try {
             outerloop:
@@ -48,6 +49,12 @@ public class ServerApp {
         }
         if (status.equals(Constants.EXIT_KEY)) {
             chatServer.closeClients();
+        }
+        try{
+            br.close();
+        }catch (IOException ioe)
+        {
+            logger.error("In closing buffered reader",ioe);
         }
     }
 }

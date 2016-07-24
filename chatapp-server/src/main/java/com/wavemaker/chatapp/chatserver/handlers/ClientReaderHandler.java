@@ -6,10 +6,10 @@ import com.wavemaker.chatapp.commons.exceptions.AppIOException;
 import com.wavemaker.chatapp.commons.ioservices.IOService;
 import com.wavemaker.chatapp.commons.messages.Message;
 import com.wavemaker.chatapp.commons.messages.ServerExiting;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 ;
 
@@ -18,15 +18,15 @@ import java.util.logging.Logger;
  */
 public class ClientReaderHandler {
 
-    private static Logger logger = Logger.getLogger(ClientReaderHandler.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(ClientReaderHandler.class.getName());
 
 
     public static Message readFromSender(ClientContext clientContext, IOService ioService) {
         Message message;
         try {
-            logger.log(Level.INFO, "Server: reading from client......." + clientContext.getClientData().getName());
+            logger.info("Server: reading from client.......{}" , clientContext.getClientData().getName());
             while (true) {
-                if (clientContext.getClientData().getSocket().getInputStream().available() != 0) { //todo
+                if (clientContext.getClientData().getSocket().getInputStream().available() != 0) {
                     break;
                 }
                 if (clientContext.getServerContext().isClosed()) {
@@ -44,7 +44,7 @@ public class ClientReaderHandler {
             clientContext.setClosed(true);
             throw new AppIOException("in reading from client " + clientContext.getClientData().getName(), ioe);
         }
-        logger.log(Level.INFO, message.toString());
+        logger.info(message.toString());
         return message;
     }
 }

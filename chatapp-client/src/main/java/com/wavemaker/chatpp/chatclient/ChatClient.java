@@ -12,23 +12,22 @@ import com.wavemaker.chatapp.commons.messages.Message;
 import com.wavemaker.chatapp.commons.messages.RegisterMessage;
 import com.wavemaker.chatapp.commons.objectfactory.ObjectFactory;
 import com.wavemaker.chatpp.chatclient.exceptions.AppInterruptedException;
-import com.wavemaker.chatpp.chatclient.exceptions.RegistrataionFailed;
-import com.wavemaker.chatpp.chatclient.io.MessageReader;
+import com.wavemaker.chatpp.chatclient.exceptions.RegistrationFailedException;
 import com.wavemaker.chatpp.chatclient.model.ClientContext;
 import com.wavemaker.chatpp.chatclient.reader.ServerReaderWorker;
 import com.wavemaker.chatpp.chatclient.writer.ServerWriterWorker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 public class ChatClient {
-    private static final Logger logger = Logger.getLogger(ChatClient.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(ChatClient.class.getName());
 
     private ClientContext clientContext;
-    private MessageReader messageReader;
     private ObjectFactory objectFactory;
     private IOService ioService;
 
@@ -46,9 +45,7 @@ public class ChatClient {
     }
 
     public void start() {
-        messageReader = (messageReader == null) ? new MessageReader() : messageReader;
-
-        Thread serverWriterWorker = new Thread(new ServerWriterWorker(ioService, clientContext, messageReader));
+        Thread serverWriterWorker = new Thread(new ServerWriterWorker(ioService, clientContext));
         Thread serverReaderWorker = new Thread(new ServerReaderWorker(ioService, clientContext));
         serverReaderWorker.start();
         serverWriterWorker.start();
@@ -62,26 +59,18 @@ public class ChatClient {
         }
     }
 
-    public void start(String fileName) {
-        this.messageReader = new MessageReader(fileName);
-        start();
-    }
-
     private void registerClient() {
-        RegisterMessage registerMessage;
-        Message acknowledgementMessage;
-
         try {
-            logger.log(Level.INFO, "Client Registering...");
-            registerMessage = new RegisterMessage(clientContext.getName());
+            logger.info("Client Registering...");
+            RegisterMessage registerMessage = new RegisterMessage(clientContext.getName());
             ioService.write(clientContext.getSocket(), registerMessage);
-            acknowledgementMessage = ioService.read(clientContext.getSocket());
+            Message acknowledgementMessage = ioService.read(clientContext.getSocket());
             if (acknowledgementMessage.getType() == Message.MessageType.REGISTRATION_SUCCESS) {
-                logger.log(Level.INFO, "Registration Success " + acknowledgementMessage.toString());
+                logger.info(acknowledgementMessage.toString());
             } else if (acknowledgementMessage.getType() == Message.MessageType.REGISTRATION_FAILED) {
-                logger.log(Level.INFO, "Registration Failed " + acknowledgementMessage.toString());
+                logger.info("Registration Failed, {}" , acknowledgementMessage);
                 closeSocket();
-                throw new RegistrataionFailed(acknowledgementMessage.toString());
+                throw new RegistrationFailedException(acknowledgementMessage.toString());
             }
         } catch (IOException ioe) {
             closeSocket();
@@ -93,7 +82,7 @@ public class ChatClient {
     }
 
     private void closeSocket() {
-        logger.log(Level.INFO, "Closing socket..");
+        logger.info("Closing socket");
         try {
             clientContext.getSocket().close();
         } catch (IOException e) {

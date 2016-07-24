@@ -3,12 +3,13 @@ package com.wavemaker.chatpp.chatclient;
 
 import com.wavemaker.chatapp.commons.exceptions.AppIOException;
 import com.wavemaker.chatapp.commons.properties.PropertyLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 /**
@@ -16,20 +17,19 @@ import java.util.logging.Logger;
  */
 public class ClientApp {
     private static final String DEFAULT_HOST = "localhost";
-    private static final Logger logger = Logger.getLogger(ClientApp.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(ClientApp.class);
 
 
     public static void main(String args[]) {
-
         String hostName = DEFAULT_HOST;
         int port;
         String clientName;
-        BufferedReader br;
+        BufferedReader br = null;
 
         if (args.length > 0) {
             clientName = args[0];
         } else {
-            logger.log(Level.INFO, "enter the name of chatclient");
+            logger.info("enter the name of chatclient");
             try {
                 br = new BufferedReader(new InputStreamReader(System.in));
                 clientName = br.readLine();
@@ -45,36 +45,13 @@ public class ClientApp {
         if (args.length > 2) {
             hostName = args[3];
         }
-
-/*
-        Runnable runnable = new Runnable() {
-            public void run() {
-                ChatClient chatClient =  new ChatClient(DEFAULT_HOST , PropertyLoader.getPort() , "c1");
-                chatClient.start("temp");
-            }
-        };
-        Thread t = new Thread(runnable);
-        t.start();
-
-        Runnable runnable1 = new Runnable() {
-            public void run() {
-                ChatClient chatClient1 = new ChatClient(DEFAULT_HOST,PropertyLoader.getPort(),"c2");
-                chatClient1.start();;
-            }
-        };
-        Thread t1 = new Thread(runnable1);
-        t1.start();
-
-        Runnable runnable2 = new Runnable() {
-            public void run() {
-                ChatClient chatClient2 = new ChatClient(DEFAULT_HOST,PropertyLoader.getPort(),"c3");
-                chatClient2.start("c3");
-            }
-        };
-        Thread t2 = new Thread(runnable2);
-        t2.start();*/
         ChatClient chatClient = new ChatClient(hostName, port, clientName);
         chatClient.start();
+        try {
+            br.close();
+        } catch (IOException ioe) {
+            logger.error("In closing buffered reader ", ioe);
+        }
     }
 }
 
