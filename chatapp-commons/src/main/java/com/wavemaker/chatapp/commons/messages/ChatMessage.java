@@ -44,7 +44,7 @@ public class ChatMessage implements Message {
     }
 
     public String toString() {
-        return "\n" + "Sender : " + getSender() + "\n" + "data :" + getData();
+        return "\n" + "Sender : " + getSender() + "\n" + "data :" +getData();
     }
 
 }

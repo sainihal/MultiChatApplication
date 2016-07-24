@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 
+
 public class ChatClient {
     private static final Logger logger = LoggerFactory.getLogger(ChatClient.class.getName());
 
@@ -59,15 +60,18 @@ public class ChatClient {
     }
 
     private void registerClient() {
+        RegisterMessage registerMessage;
+        Message acknowledgementMessage;
+
         try {
             logger.info("Client Registering...");
-            RegisterMessage registerMessage = new RegisterMessage(clientContext.getName());
+            registerMessage = new RegisterMessage(clientContext.getName());
             ioService.write(clientContext.getSocket(), registerMessage);
-            Message acknowledgementMessage = ioService.read(clientContext.getSocket());
+            acknowledgementMessage = ioService.read(clientContext.getSocket());
             if (acknowledgementMessage.getType() == Message.MessageType.REGISTRATION_SUCCESS) {
                 logger.info(acknowledgementMessage.toString());
             } else if (acknowledgementMessage.getType() == Message.MessageType.REGISTRATION_FAILED) {
-                logger.info("Registration Failed, {}", acknowledgementMessage);
+                logger.info("Registration Failed, {}" , acknowledgementMessage);
                 closeSocket();
                 throw new RegistrationFailedException(acknowledgementMessage.toString());
             }

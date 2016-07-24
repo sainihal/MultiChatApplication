@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 
+
 /**
  * Created by sainihala on 14/7/16.
  */
@@ -18,7 +19,7 @@ public class ReadHandler {
     private static final Logger logger = LoggerFactory.getLogger(ReadHandler.class.getName());
 
     public static void readFromServer(ClientContext clientContext, IOService ioService)
-            throws IOException, ClassNotFoundException, ClientClosedException, ServerClosedException {
+            throws IOException, ClassNotFoundException, ClientClosedException,ServerClosedException {
         while (true) {
             if (clientContext.getSocket().getInputStream().available() != 0) {
                 break;
@@ -28,7 +29,7 @@ public class ReadHandler {
             }
         }
         Message readObject = ioService.read(clientContext.getSocket());
-        logger.info("Client:   data read in chatclient is........{}", readObject.toString());
+        logger.info("Client:   data read in chatclient is........{}" ,readObject.toString());
         if (readObject.getType() == Message.MessageType.SERVER_EXITING) {
             throw new ServerClosedException("Server closed");
         }

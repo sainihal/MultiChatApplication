@@ -28,10 +28,12 @@ public class ServerReaderWorker implements Runnable {
                 ReadHandler.readFromServer(clientContext, ioService);
             }
         } catch (ClientClosedException message) {
+            logger.info( message.getMessage());
+        }
+        catch (ServerClosedException message){
             logger.info(message.getMessage());
-        } catch (ServerClosedException message) {
-            logger.info(message.getMessage());
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new FailedToReadException("failed to read from server", e);
         } finally {
             clientContext.setClosed(true);
